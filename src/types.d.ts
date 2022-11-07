@@ -1,5 +1,4 @@
-interface GroupDetails {
-  groupId: string;
+interface MonthsDetails {
   budgetMonth: string;
 }
 

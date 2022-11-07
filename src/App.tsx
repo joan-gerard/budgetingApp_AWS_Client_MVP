@@ -8,13 +8,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { Home } from "./views/Home";
 import { MessageInterface } from "./views/MessageInterface";
 import "./App.css";
+import MonthlyBudget from "./views/MonthlyBudget";
 
 const websocketUrl = process.env.REACT_APP_WS_URL;
 
 function App(props: { signOut: ((data?: any) => void) | undefined }) {
   const [messages, setMessages] = useState<Record<string, any[]>>({});
   const [socket, setSocket] = useState<WebSocket>();
-  const [groups, setGroups] = useState<GroupDetails[]>([]);
+  const [months, setMonths] = useState<MonthsDetails[]>([]);
+
+  console.log({months})
 
   const websocketConnect = async () => {
     if (socket) return;
@@ -32,7 +35,7 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
 
   const listMyGroups = () => {
     const data = {
-      action: "listMyGroups",
+      action: "listMyMonths",
     };
     socket?.send(JSON.stringify(data));
     return;
@@ -60,8 +63,8 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
             [groupId]: [...messages[groupId], rest],
           });
           return;
-        case "groupData":
-          setGroups(messageData.data);
+        case "monthData":
+          setMonths(messageData.data);
           return;
         case "info":
           toast(messageData.message);
@@ -152,21 +155,22 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
               path="/"
               element={
                 <Home
-                  groups={groups}
+                  months={months}
                   listMyGroups={listMyGroups}
                   joinOrCreate={joinOrCreate}
                 />
               }
             />
             <Route
-              path="/group/:id"
+              path="/month/:id"
               element={
-                <MessageInterface
-                  messages={messages}
-                  sendMessage={sendMessage}
-                  setInitialMessages={setInitialMessages}
-                  handleRequest={handleRequest}
-                />
+                <MonthlyBudget />
+                // <MessageInterface
+                //   messages={messages}
+                //   sendMessage={sendMessage}
+                //   setInitialMessages={setInitialMessages}
+                //   handleRequest={handleRequest}
+                // />
               }
             />
           </Routes>

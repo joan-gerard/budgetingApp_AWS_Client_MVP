@@ -4,7 +4,7 @@ import { CreateGroup } from "./CreateGroup";
 import { JoinGroup } from "./JoinGroup";
 
 interface HomeProps {
-  groups: GroupDetails[];
+  months: MonthsDetails[];
   listMyGroups: () => void;
   joinOrCreate: (data: {
     action: string;
@@ -13,7 +13,7 @@ interface HomeProps {
   }) => void;
 }
 
-export const Home = ({ groups, listMyGroups, joinOrCreate }: HomeProps) => {
+export const Home = ({ months, listMyGroups, joinOrCreate }: HomeProps) => {
   const joinGroup = ({
     action,
     groupId,
@@ -45,12 +45,12 @@ export const Home = ({ groups, listMyGroups, joinOrCreate }: HomeProps) => {
         <JoinGroup onSubmit={joinGroup} />
         <CreateGroup onSubmit={createGroup} />
       </div>
-      {groups.map(({ budgetMonth, groupId }) => {
+      {months.map(({ budgetMonth }, idx) => {
         return (
-          <div key={groupId} className="group__name">
+          <div key={idx} className="group__name">
             <h2>{budgetMonth}</h2>
             {/* <h2>{groupId}</h2> */}
-            <Link to={`group/${groupId}`}>
+            <Link to={`month/${budgetMonth}`}>
               <AiFillWechat />
             </Link>
           </div>
