@@ -71,7 +71,7 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
       }
     } catch (e) {
       console.log("error in event listener", e);
-      //toast("unable to parse the event");
+      toast("unable to parse the event");
     }
   });
   socket?.addEventListener("close", function (event) {
@@ -80,6 +80,7 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
   });
 
   const joinOrCreate = (data: JoinOrCreateParams) => {
+    console.log({ joinOrCreate: data });
     socket?.send(JSON.stringify(data));
     setTimeout(() => {
       listMyGroups();
@@ -146,7 +147,7 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
             </Link>
             <button onClick={props.signOut}>Sign Out</button>
           </nav>
-          {/* <Routes>
+          <Routes>
             <Route
               path="/"
               element={
@@ -168,7 +169,7 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
                 />
               }
             />
-          </Routes> */}
+          </Routes>
         </div>
       )}
     </div>

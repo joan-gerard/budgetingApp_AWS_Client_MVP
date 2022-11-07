@@ -8,7 +8,7 @@ interface HomeProps {
   listMyGroups: () => void;
   joinOrCreate: (data: {
     action: string;
-    groupName?: string;
+    budgetMonth?: string;
     groupId?: string;
   }) => void;
 }
@@ -28,14 +28,14 @@ export const Home = ({ groups, listMyGroups, joinOrCreate }: HomeProps) => {
   };
   const createGroup = ({
     action,
-    groupName,
+    budgetMonth,
   }: {
     action: string;
-    groupName: string;
+    budgetMonth: string;
   }) => {
     joinOrCreate({
       action,
-      groupName,
+      budgetMonth,
     });
   };
 
@@ -45,10 +45,10 @@ export const Home = ({ groups, listMyGroups, joinOrCreate }: HomeProps) => {
         <JoinGroup onSubmit={joinGroup} />
         <CreateGroup onSubmit={createGroup} />
       </div>
-      {groups.map(({ groupName, groupId }) => {
+      {groups.map(({ budgetMonth, groupId }) => {
         return (
           <div key={groupId} className="group__name">
-            <h2>{groupName}</h2>
+            <h2>{budgetMonth}</h2>
             {/* <h2>{groupId}</h2> */}
             <Link to={`group/${groupId}`}>
               <AiFillWechat />

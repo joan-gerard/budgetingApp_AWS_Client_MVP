@@ -1,6 +1,6 @@
 interface GroupDetails {
   groupId: string;
-  groupName: string;
+  budgetMonth: string;
 }
 
 type Message = UserMessage | InfoMessage | GroupDataMessage;
@@ -29,7 +29,7 @@ interface MessageHistory {
 // App.tsx - start
 type JoinOrCreateParams = {
   action: string;
-  groupName?: string;
+  budgetMonth?: string;
   groupId?: string;
 };
 type SendMessageParams = {
