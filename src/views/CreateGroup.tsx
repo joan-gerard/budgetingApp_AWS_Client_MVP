@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal } from "../components/Modal";
-import { Button } from "@aws-amplify/ui-react";
+import { Button, SelectField } from "@aws-amplify/ui-react";
 
 interface Props {
   onSubmit: ({

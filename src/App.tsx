@@ -17,8 +17,6 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
   const [socket, setSocket] = useState<WebSocket>();
   const [months, setMonths] = useState<MonthsDetails[]>([]);
 
-  console.log({ months });
-
   // connect to WS
   const websocketConnect = async () => {
     if (socket) return;
@@ -91,7 +89,7 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
     socket?.send(JSON.stringify(data));
     setTimeout(() => {
       listMyMonths();
-    }, 4000);
+    }, 1000);
   };
 
   // emit messages
