@@ -5,7 +5,7 @@ import { JoinGroup } from "./JoinGroup";
 
 interface HomeProps {
   months: MonthsDetails[];
-  listMyGroups: () => void;
+  listMyMonths: () => void;
   joinOrCreate: (data: {
     action: string;
     budgetMonth?: string;
@@ -13,7 +13,7 @@ interface HomeProps {
   }) => void;
 }
 
-export const Home = ({ months, listMyGroups, joinOrCreate }: HomeProps) => {
+export const Home = ({ months, listMyMonths, joinOrCreate }: HomeProps) => {
   const joinGroup = ({
     action,
     groupId,
@@ -56,7 +56,7 @@ export const Home = ({ months, listMyGroups, joinOrCreate }: HomeProps) => {
           </div>
         );
       })}
-      <button onClick={listMyGroups}>Refresh Group</button>
+      <button onClick={listMyMonths}>Refresh Group</button>
     </div>
   );
 };

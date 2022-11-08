@@ -31,9 +31,11 @@ type JoinOrCreateParams = {
   budgetMonth?: string;
   groupId?: string;
 };
-type SendMessageParams = {
-  message: string;
-  groupId: string;
+type SendTransactionParams = {
+  budgetMonth: string;
+  type: string;
+  category: string;
+  amount: number;
 };
 type HandleRequestParams = {
   action: "acceptJoinRequest" | "rejectJoinRequest";

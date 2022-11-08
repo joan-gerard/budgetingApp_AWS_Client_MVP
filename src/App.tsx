@@ -17,8 +17,9 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
   const [socket, setSocket] = useState<WebSocket>();
   const [months, setMonths] = useState<MonthsDetails[]>([]);
 
-  console.log({months})
+  console.log({ months });
 
+  // connect to WS
   const websocketConnect = async () => {
     if (socket) return;
     const user = await Auth.currentSession();
@@ -33,7 +34,8 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
     websocketConnect();
   }, []);
 
-  const listMyGroups = () => {
+  // fetch created Months
+  const listMyMonths = () => {
     const data = {
       action: "listMyMonths",
     };
@@ -41,8 +43,9 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
     return;
   };
 
+  // socket events
   socket?.addEventListener("open", () => {
-    listMyGroups();
+    listMyMonths();
   });
 
   socket?.addEventListener("message", function (event) {
@@ -82,29 +85,39 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
     setSocket(undefined);
   });
 
+  // create or join Month
   const joinOrCreate = (data: JoinOrCreateParams) => {
     console.log({ joinOrCreate: data });
     socket?.send(JSON.stringify(data));
     setTimeout(() => {
-      listMyGroups();
+      listMyMonths();
     }, 4000);
   };
 
-  const sendMessage = ({ message, groupId }: SendMessageParams) => {
+  // emit messages
+  const sendMessage = ({
+    budgetMonth,
+    type,
+    category,
+    amount,
+  }: SendTransactionParams) => {
+    console.log("SEND Transaction");
     const data = {
-      action: "message",
-      message,
-      groupId,
+      action: "transaction", // triggers lambda
+      budgetMonth,
+      type,
+      category,
+      amount,
     };
 
     socket?.send(JSON.stringify(data));
-    setMessages({
-      ...messages,
-      [groupId]: [
-        ...(messages[groupId] || []),
-        { message, mine: true, type: "message" },
-      ],
-    });
+    // setMessages({
+    //   ...messages,
+    //   [groupId]: [
+    //     ...(messages[groupId] || []),
+    //     { message, mine: true, type: "message" },
+    //   ],
+    // });
   };
 
   const handleRequest = ({
@@ -123,10 +136,13 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
     socket?.send(JSON.stringify(data));
   };
 
+  // fetch groupDetails and MessageHistory using http endpoints
   const setInitialMessages = ({
     initialMessages,
     groupId,
   }: SetInitialMessagesParams) => {
+    console.log("setInitialMessages");
+
     setMessages({
       ...messages,
       [groupId]: [...initialMessages],
@@ -156,7 +172,7 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
               element={
                 <Home
                   months={months}
-                  listMyGroups={listMyGroups}
+                  listMyMonths={listMyMonths}
                   joinOrCreate={joinOrCreate}
                 />
               }
@@ -164,7 +180,8 @@ function App(props: { signOut: ((data?: any) => void) | undefined }) {
             <Route
               path="/month/:id"
               element={
-                <MonthlyBudget />
+                <MonthlyBudget sendMessage={sendMessage} />
+
                 // <MessageInterface
                 //   messages={messages}
                 //   sendMessage={sendMessage}
